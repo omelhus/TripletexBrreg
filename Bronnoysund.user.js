@@ -32,7 +32,7 @@
     }
     
     var ucWords = function (str) { // http://stackoverflow.com/a/4609587/491094
-    	return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
+    	return (str + '').replace(/^([a-zæøå])|\s+([a-zæøå])/g, function ($1) {
         	return $1.toUpperCase();
     	});
 	}
