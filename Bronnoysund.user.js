@@ -8,25 +8,6 @@
 // @require http://code.jquery.com/jquery-2.0.2.min.js
 // @require http://code.jquery.com/ui/1.10.3/jquery-ui.js
 // ==/UserScript==
-/*
-    forradrkommnr: "1505"
-    forradrland: "Norge"
-    forradrpostnr: "6517"
-    forradrpoststed: "KRISTIANSUND N"
-    forretningsadr: "Industriveien 8A"
-    moms: "J"
-    navn: "ON IT AS"
-    nkode1: "62.010"
-    nkode2: ""
-    nkode3: ""
-    organisasjonsform: "AS"
-    orgnr: "996825396"
-    postadresse: ""
-    ppostland: ""
-    ppostnr: ""
-    ppoststed: ""
-    regifr: "J"
-*/
 
 (function(){
 	   
