@@ -11,7 +11,7 @@
 2. Installer scriptet ved å klikke [her][Chrome]
 
 ## Firefox
-1. Installer [Greasemonkey][Greasemonkey] fra Addons
+1. Installer [Greasemonkey][Greasemonkey] fra Firefox Add-ons
 2. Installer scriptet ved å klikke [her][Firefox]
 
 _Merk at det er forskjellige filer for Firefox og Chrome_
