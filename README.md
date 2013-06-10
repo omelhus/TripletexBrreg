@@ -1,4 +1,5 @@
-# Tripletex - Hent adresser og navn fra Brønnøysundregistrene
+# Tripletex 
+### Hent adresser og navn fra Brønnøysundregistrene
 
 Fungerer i Google Chrome
 
