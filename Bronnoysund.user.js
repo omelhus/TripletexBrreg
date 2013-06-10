@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       Tripletex Brønnøysund
 // @namespace  http://github.com/omelhus
-// @version    1.5
+// @version    1.6
 // @description  Hent firmainformasjon fra Brønnøysund i Tripletex. Søk på navn eller bruk shift + enter i orgnr for å hente informasjon.
 // @match       https://tripletex.no/execute/*
 // @match       https://tripletex.no/contentBlank*
@@ -33,30 +33,26 @@
     }
     
     var ucWords = function (str) { // http://stackoverflow.com/a/4609587/491094
-    	return (str + '').replace(/^([a-zæøå])|\s+([a-zæøå])/g, function ($1) {
+    	return (str + '').toLowerCase().replace(/^([a-zæøå])|\s+([a-zæøå])/g, function ($1) {
         	return $1.toUpperCase();
     	});
 	}
     
     var parseName = function(name){
-     	var lower = name.toLowerCase();
-        return ucWords(lower);
+        return ucWords(name);
     }
     
     var fillFields = function(entity){
-        console.log(entity);
         setField("name", parseName(entity.navn));   
         setField("number", entity.orgnr);   
         setField("physicalAddress1", entity.forretningsadr);
         setField("physicalPostalCode", entity.forradrpostnr);
         setField("physicalCity", entity.forradrpoststed);
         if(entity.postadresse && entity.ppostnr){
-            
             setField("address1", entity.postadresse);
         	setField("postalcode", entity.ppostnr);
         	setField("city", entity.ppoststed);      
         } else {
-            
             setField("address1", entity.forretningsadr);
         	setField("postalcode", entity.forradrpostnr);
         	setField("city", entity.forradrpoststed);
@@ -79,14 +75,17 @@
     var select = function (event, ui) {
         var item = ui.item;
         fillFields(item);
-        return false;
+    };
+    
+    var focus = function (event, ui){
+        ui.item.value = ucWords(ui.item.navn);
     };
     
     var cache = {};
     
-    var initAutoComplete = function(){
-        $("input[name='customer\\.name']").autocomplete({
-            minLength: 3,
+    var initAutoComplete = function(element){
+        element.autocomplete({
+            minLength: 2,
             source: function (request, response) {
                 if (cache[request.term]) {
                     response(cache[request.term]);
@@ -98,9 +97,10 @@
                 }
             },
             select: select,
+            focus: focus,
         }).data("ui-autocomplete")._renderItem = function (ul, item) {
             return $("<li>")
-                .append("<a>" + item.navn + "<br><small>" + item.forretningsadr + ", " + item.forradrpostnr + " " + item.forradrpoststed + "</small></a>")
+                .append("<a>" + ucWords(item.navn) + "<br><small>" + item.forretningsadr + ", " + item.forradrpostnr + " " + item.forradrpoststed + "</small></a>")
                 .appendTo(ul);
         };  
     };
@@ -116,13 +116,10 @@
         });
         
         $(document).on("focus", "input[name='customer\\.name']", function(event){
-            var id = $(this).attr("id");
-            if(!initiatedOn[id]){
-        		initiatedOn[id] = true;
-                initAutoComplete();   
+            if(!$(this).data("ui-autocomplete")){
+                initAutoComplete($(this));   
             }
         });
     });
     
 })();
-
