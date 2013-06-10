@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       Tripletex Brønnøysund
 // @namespace  http://github.com/omelhus
-// @version    1.9
+// @version    2.0
 // @description  Hent firmainformasjon fra Brønnøysund i Tripletex. Søk på navn eller bruk shift + enter i orgnr for å hente informasjon.
 // @match       https://tripletex.no/execute/*
 // @match       https://tripletex.no/contentBlank*
@@ -9,7 +9,6 @@
 // @require http://code.jquery.com/jquery-2.0.2.min.js
 // @require http://code.jquery.com/ui/1.10.3/jquery-ui.js
 // ==/UserScript==
-
 (function(){
 	   
     var brreg = "https://hotell.difi.no/api/json/brreg/enhetsregisteret";
@@ -31,12 +30,6 @@
     var setField = function(field, value){
         $("input[name='customer\\." + field + "']").val(value);
     }
-
-    var _setElementValue = function(id, value){
-        if(typeof setElementValue !== "undefined"){
-            setElementValue(id, value);
-        }
-    }
     
     var ucWords = function (str) { // http://stackoverflow.com/a/4609587/491094
     	return (str + '').toLowerCase().replace(/^([a-zæøå])|\s+([a-zæøå])/g, function ($1) {
@@ -48,7 +41,16 @@
         return ucWords(name);
     }
     
-      var fillFields = function(entity){
+    var _setElementValue = function(id, value){
+        if(typeof setElementValue !== "undefined"){
+            setElementValue(id, value);
+        } else {
+         	$("#" + id.replace(".","\\.")).val(value);   
+			$("#" + id.replace(".","\\.") + "Select").val("Norge");   
+        }
+    }
+    
+    var fillFields = function(entity){
         setField("name", parseName(entity.navn));   
         setField("number", entity.orgnr);   
         setField("physicalAddress1", entity.forretningsadr);
@@ -69,8 +71,8 @@
         	if(entity.forradrland === "Norge")
                 _setElementValue("ui-tabs-1customer.countryId", 161);
         }
-    }
- 
+    };
+    
     var search = function (query, callback) {
         $.ajax({
             url: brreg,
