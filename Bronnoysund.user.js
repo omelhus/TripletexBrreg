@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name		Tripletex Brønnøysund
 // @namespace	http://github.com/omelhus
-// @version		2.2
+// @version		2.1
 // @description	Hent firmainformasjon fra Brønnøysund i Tripletex. Søk på navn eller bruk shift + enter i orgnr for å hente informasjon.
 // @match       https://tripletex.no/execute/*
 // @match       https://tripletex.no/contentBlank*
@@ -46,8 +46,8 @@
         if(typeof setElementValue !== "undefined"){
             setElementValue(id, value);
         } else {
-         	$("#" + id.replace(".","\\.")).val(value);   
-			$("#" + id.replace(".","\\.") + "Select").val("Norge");   
+         	$("input[name='" + id.replace(".","\\.") + "']").val(value);   
+			$("input[name='" + id.replace(".","\\.") + "Select" + "']").val("Norge");   
         }
     }
     
@@ -58,19 +58,19 @@
         setField("physicalPostalCode", entity.forradrpostnr);
         setField("physicalCity", ucWords(entity.forradrpoststed));
         if(entity.forradrland === "Norge")
-            _setElementValue("ui-tabs-1customer.physicalCountryId", 161);
+            _setElementValue("customer.physicalCountryId", 161);
         if(entity.postadresse && entity.ppostnr){
             setField("address1", entity.postadresse);
         	setField("postalcode", entity.ppostnr);
         	setField("city", ucWords(entity.ppoststed));    
         	if(entity.ppostland === "Norge")
-                _setElementValue("ui-tabs-1customer.countryId", 161);
+                _setElementValue("customer.countryId", 161);
         } else {
             setField("address1", entity.forretningsadr);
         	setField("postalcode", entity.forradrpostnr);
         	setField("city", ucWords(entity.forradrpoststed));
         	if(entity.forradrland === "Norge")
-                _setElementValue("ui-tabs-1customer.countryId", 161);
+                _setElementValue("customer.countryId", 161);
         }
     };
     
