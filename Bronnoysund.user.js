@@ -1,9 +1,10 @@
 // ==UserScript==
 // @name       Tripletex Brønnøysund
 // @namespace  http://github.com/omelhus
-// @version    1.3
+// @version    1.4
 // @description  Hent firmainformasjon fra Brønnøysund i Tripletex. Søk på navn eller bruk shift + enter i orgnr for å hente informasjon.
-// @match       https://tripletex.no/execute/customer*
+// @match       https://tripletex.no/execute/*
+// @match       https://tripletex.no/contentBlank*
 // @copyright  2013+, Ole Melhus
 // @require http://code.jquery.com/jquery-2.0.2.min.js
 // @require http://code.jquery.com/ui/1.10.3/jquery-ui.js
@@ -105,17 +106,23 @@
         };  
     };
     
+    var initiatedOn = {};
+    
     $(function(){
-        $("body").on("keydown", "input[name='customer\\.number']", function(event){
+        $(document).on("keydown", "input[name='customer\\.number']", function(event){
             if(event.shiftKey && event.keyCode == 13) {
                 var orgNo = $(this).val();
                 fetchInfo(orgNo, fillFields);
             }
         });
-        setTimeout(function(){
-        	initAutoComplete();
-        }, 500);
+        
+        $(document).on("focus", "input[name='customer\\.name']", function(event){
+            var id = $(this).attr("id");
+            if(!initiatedOn[id]){
+        		initiatedOn[id] = true;
+                initAutoComplete();   
+            }
+        });
     });
     
 })();
-
