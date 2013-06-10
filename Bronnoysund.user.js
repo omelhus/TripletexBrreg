@@ -31,6 +31,12 @@
     var setField = function(field, value){
         $("input[name='customer\\." + field + "']").val(value);
     }
+
+    var _setElementValue = function(id, value){
+        if(typeof setElementValue !== "undefined"){
+            setElementValue(id, value);
+        }
+    }
     
     var ucWords = function (str) { // http://stackoverflow.com/a/4609587/491094
     	return (str + '').toLowerCase().replace(/^([a-zæøå])|\s+([a-zæøå])/g, function ($1) {
@@ -42,23 +48,29 @@
         return ucWords(name);
     }
     
-    var fillFields = function(entity){
+      var fillFields = function(entity){
         setField("name", parseName(entity.navn));   
         setField("number", entity.orgnr);   
         setField("physicalAddress1", entity.forretningsadr);
         setField("physicalPostalCode", entity.forradrpostnr);
         setField("physicalCity", entity.forradrpoststed);
+        if(entity.forradrland === "Norge")
+            _setElementValue("ui-tabs-1customer.physicalCountryId", 161);
         if(entity.postadresse && entity.ppostnr){
             setField("address1", entity.postadresse);
         	setField("postalcode", entity.ppostnr);
-        	setField("city", entity.ppoststed);      
+        	setField("city", entity.ppoststed);    
+        	if(entity.ppostland === "Norge")
+                _setElementValue("ui-tabs-1customer.countryId", 161);
         } else {
             setField("address1", entity.forretningsadr);
         	setField("postalcode", entity.forradrpostnr);
         	setField("city", entity.forradrpoststed);
+        	if(entity.forradrland === "Norge")
+                _setElementValue("ui-tabs-1customer.countryId", 161);
         }
-    };
-    
+    }
+ 
     var search = function (query, callback) {
         $.ajax({
             url: brreg,
