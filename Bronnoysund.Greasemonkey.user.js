@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name       Tripletex Brønnøysund
+// @name       Tripletex Brønnøysund (Greasemonkey)
 // @namespace  http://github.com/omelhus
 // @version    1.6
 // @description  Hent firmainformasjon fra Brønnøysund i Tripletex. Søk på navn eller bruk shift + enter i orgnr for å hente informasjon.
