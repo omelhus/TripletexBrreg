@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name		Tripletex Brønnøysund
 // @namespace	http://github.com/omelhus
-// @version		2.1
+// @version		2.2
 // @description	Hent firmainformasjon fra Brønnøysund i Tripletex. Søk på navn eller bruk shift + enter i orgnr for å hente informasjon.
 // @match       https://tripletex.no/execute/*
 // @match       https://tripletex.no/contentBlank*
-// @grant 		none
+// @grant 		GM_Log
 // @copyright	2013+, Ole Melhus
 // @require		http://code.jquery.com/jquery-2.0.2.min.js
 // @require		http://code.jquery.com/ui/1.10.3/jquery-ui.js
