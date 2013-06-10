@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name       Tripletex Brønnøysund
 // @namespace  http://github.com/omelhus
-// @version    2.0
+// @version    2.1
 // @description  Hent firmainformasjon fra Brønnøysund i Tripletex. Søk på navn eller bruk shift + enter i orgnr for å hente informasjon.
 // @match       https://tripletex.no/execute/*
 // @match       https://tripletex.no/contentBlank*
@@ -55,19 +55,19 @@
         setField("number", entity.orgnr);   
         setField("physicalAddress1", entity.forretningsadr);
         setField("physicalPostalCode", entity.forradrpostnr);
-        setField("physicalCity", entity.forradrpoststed);
+        setField("physicalCity", ucWords(entity.forradrpoststed));
         if(entity.forradrland === "Norge")
             _setElementValue("ui-tabs-1customer.physicalCountryId", 161);
         if(entity.postadresse && entity.ppostnr){
             setField("address1", entity.postadresse);
         	setField("postalcode", entity.ppostnr);
-        	setField("city", entity.ppoststed);    
+        	setField("city", ucWords(entity.ppoststed));    
         	if(entity.ppostland === "Norge")
                 _setElementValue("ui-tabs-1customer.countryId", 161);
         } else {
             setField("address1", entity.forretningsadr);
         	setField("postalcode", entity.forradrpostnr);
-        	setField("city", entity.forradrpoststed);
+        	setField("city", ucWords(entity.forradrpoststed));
         	if(entity.forradrland === "Norge")
                 _setElementValue("ui-tabs-1customer.countryId", 161);
         }
@@ -114,13 +114,11 @@
             focus: focus,
         }).data("ui-autocomplete")._renderItem = function (ul, item) {
             return $("<li>")
-                .append("<a>" + ucWords(item.navn) + "<br><small>" + item.forretningsadr + ", " + item.forradrpostnr + " " + item.forradrpoststed + "</small></a>")
+                .append("<a>" + ucWords(item.navn) + "<br><small>" + item.forretningsadr + ", " + item.forradrpostnr + " " + ucWords(item.forradrpoststed) + "</small></a>")
                 .appendTo(ul);
         };  
     };
-    
-    var initiatedOn = {};
-    
+       
     $(function(){
         $(document).on("keydown", "input[name='customer\\.number']", function(event){
             if(event.shiftKey && event.keyCode == 13) {
@@ -133,6 +131,25 @@
             if(!$(this).data("ui-autocomplete")){
                 initAutoComplete($(this));   
             }
+        });
+        
+        $(document).on("keyup", "input[name*='PostalCode'], input[name*='postalcode']", function(){
+            var input = $(this);
+            var value = input.val();
+            var output = $(this).next("input[type=text]");
+            if(value.length===4){
+                $.getJSON('https://fraktguide.bring.no/fraktguide/postalCode.json?pnr='+ value,
+				function(data){
+					if(data.valid){
+                        input.removeClass("ui-state-error");
+						output.val(ucWords(data.result));
+					} else {
+                        input.addClass("ui-state-error");
+						output.val('');
+                        output.attr("placeholder", "Ugyldig postnummer");
+					}
+				});
+            }           
         });
     });
     
