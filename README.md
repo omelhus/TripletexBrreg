@@ -2,8 +2,18 @@
 [Greasemonkey]:https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/
 [Tampermonkey]:https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en
 
-# Tripletex 
+# Uoffisiell utvidelse Tripletex 
 ### Hent adresser og navn fra Brønnøysundregistrene
+
+__Merk: Denne utvidelsen er 
+utviklet av Ole Melhus, uten medvirkning eller godkjenning fra Tripletex 
+AS. All bruk av utvidelsen skjer på eget ansvar, og Tripletex AS kan på 
+ingen måte holdes ansvarlig for eventuelle problemer måtte oppstå som 
+følge av dette.__
+
+Ved å bruke denne utvidelsen godtar du dette, og du godtar også at hverken Ole Melhus, ON IT AS eller Tripletex AS har noe som helst ansvar for noe som helst som angår denne bruken.
+
+Tripletex har bekreftet at de vil komme med tilsvarende funksjonalitet i løpet av sommeren, så om du ikke forstår hva det innebærer å installere dette scriptet bør du vente på det.
 
 ## Google Chrome
 1. Installer [Tampermonkey][Tampermonkey] fra Chrome Store
