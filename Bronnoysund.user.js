@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name		Tripletex Brønnøysund
 // @namespace	http://github.com/omelhus
-// @version		2.5
+// @version		2.6
 // @description	Hent firmainformasjon fra Brønnøysund i Tripletex. Søk på navn eller bruk shift + enter i orgnr for å hente informasjon.
 // @match       https://tripletex.no/execute/*
 // @match       https://tripletex.no/contentBlank*
-// @grant 		GM_Log, GM_xmlhttpRequest
+// @grant 		GM_xmlhttpRequest
 // @copyright	2013+, Ole Melhus
 // @require		http://code.jquery.com/jquery-2.0.2.min.js
 // @require		http://code.jquery.com/ui/1.10.3/jquery-ui.js
@@ -43,19 +43,13 @@
     }
     
     var _setElementValue = function(id, value){
-        if(typeof setElementValue !== "undefined"){
-            setElementValue(id, value);
-        } else {
             $("input[name$='\\." + id + "']").val(value);   
-            $("input[name$='\\." + id + "Select" + "']").val("Norge");   
-        }
+            $("input[name$='\\." + id + "Select" + "']").val("Norge");
     }
     
     
-    var removeTrailing = function(str){
-        console.log(str);
+    var removeTrailing = function(str){        
         var parsed = str.replace(/,*\s*$/, "");
-        console.log(parsed);
         return parsed;
     }
     
@@ -87,14 +81,14 @@
             setField("postalcode", entity.ppostnr);
             setField("city", ucWords(entity.ppoststed));    
             
-            if(entity.ppostland === "Norge")
+            if(entity.ppostland.toLowerCase() === "norge")
                 _setElementValue("countryId", 161);
                         
         } else {
             setField("address1", removeTrailing(entity.forretningsadr));
             setField("postalcode", entity.forradrpostnr);
             setField("city", ucWords(entity.forradrpoststed));
-            if(entity.forradrland === "Norge")
+            if(entity.forradrland.toLowerCase() === "norge")
                 _setElementValue("countryId", 161);
         }
     };
@@ -186,18 +180,23 @@
             if(event.shiftKey && event.keyCode == 13) {
                 var phoneNumber = $(this).val();
                 var url = "https://www.gulesider.no/person/resultat/" + phoneNumber;
-                $.get(url, function(content){
-                    var src = $(content);
-                    src.remove("img, script");
-                    var entity;
-                    var company = src.find("#result-list .hit:first");
-                    if(company.length>0){
-                        entity =  parseCompany(company);  
-                    } else {
-                        var person = src.find(".person-info");
-                        entity = parsePerson(person);
+                GM_xmlhttpRequest({
+                    method: "GET",
+                    url: url,
+                    onload: function(response){
+                        var content = response.response;
+                        var src = $(content);
+                        src.remove("img, script");
+                        var entity;
+                        var company = src.find("#result-list .hit:first");
+                        if(company.length>0){
+                            entity =  parseCompany(company);  
+                        } else {
+                            var person = src.find(".person-info");
+                            entity = parsePerson(person);
+                        }
+                        fillFields(entity); 
                     }
-                    fillFields(entity);
                 });
             }
         });
