@@ -5,7 +5,9 @@
 # Uoffisiell utvidelse til Tripletex 
 ### Hent adresser og navn fra Brønnøysundregistrene
 
-__Merk: Denne utvidelsen er 
+**Merk 1: Det begynner å bli noen år siden Tripletex implementerte denne funksjonaliteten, så nytteverdien av dette scriptet er nå begrenset til å være en referanse.**
+
+__Merk 2: Denne utvidelsen er 
 utviklet av Ole Melhus, uten medvirkning eller godkjenning fra Tripletex 
 AS. All bruk av utvidelsen skjer på eget ansvar, og Tripletex AS kan på 
 ingen måte holdes ansvarlig for eventuelle problemer måtte oppstå som 
